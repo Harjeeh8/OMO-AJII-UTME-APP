@@ -71,11 +71,95 @@
     </style>
 </head>
 <body>
-    <!-- Home Screen -->
     <div id="home" class="screen active">
         <h1>UTME Practice App</h1>
         <p class="subtitle">Free practice for Nigerian students</p>
         <button class="btn" onclick="startSubject('English')">English</button>
         <button class="btn" onclick="startSubject('Mathematics')">Mathematics</button>
         <button class="btn" onclick="startSubject('Physics')">Physics</button>
-        <button class="btn" onclick="start
+        <button class="btn" onclick="startSubject('Chemistry')">Chemistry</button>
+        <button class="btn" onclick="startSubject('Biology')">Biology</button>
+        <button class="btn" onclick="startSubject('Government')">Government</button>
+        <button class="btn" onclick="startSubject('Economics')">Economics</button>
+        <button class="btn" onclick="startSubject('Literature')">Literature</button>
+    </div><div id="quiz" class="screen">
+        <div class="timer" id="timer">Time: 60s</div>
+        <div class="score" id="score">Score: 0</div>
+        <div class="question-box">
+            <p id="questionText">Question will appear here</p>
+        </div>
+        <div class="options" id="options"></div>
+        <button class="btn secondary" onclick="goHome()">Back to Subjects</button>
+    </div>
+
+    <div id="result" class="screen">
+        <h1>Quiz Finished!</h1>
+        <div class="result" id="finalScore"></div>
+        <button class="btn" onclick="goHome()">Back to Subjects</button>
+    </div>
+
+    <script>
+        const questions = {
+            English: [
+                { q: "Choose the correct spelling:", options: ["Accomodate", "Acommodate", "Accommodate", "Acomodate"], answer: 2 },
+                { q: "She is the ___ of the two sisters.", options: ["tall", "taller", "tallest", "more tall"], answer: 1 },
+                { q: "The opposite of 'brave' is:", options: ["Strong", "Cowardly", "Bold", "Fearless"], answer: 1 }
+            ],
+            Mathematics: [
+                { q: "What is 15% of 200?", options: ["20", "25", "30", "35"], answer: 2 },
+                { q: "Simplify: 2x + 3x - 5", options: ["5x - 5", "6x - 5", "5x + 5", "x - 5"], answer: 0 },
+                { q: "The square root of 144 is:", options: ["11", "12", "13", "14"], answer: 1 }
+            ],
+            Physics: [
+                { q: "The S.I. unit of force is:", options: ["Joule", "Newton", "Watt", "Pascal"], answer: 1 },
+                { q: "Light travels fastest in:", options: ["Water", "Glass", "Air", "Vacuum"], answer: 3 },
+                { q: "What type of lens is used to correct short-sightedness?", options: ["Convex", "Concave", "Cylindrical", "Bifocal"], answer: 1 }
+            ],
+            Chemistry: [
+                { q: "The chemical symbol for Sodium is:", options: ["So", "Na", "Sd", "Sm"], answer: 1 },
+                { q: "Which gas is used in fire extinguishers?", options: ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"], answer: 2 },
+                { q: "pH of a neutral solution is:", options: ["0", "7", "14", "1"], answer: 1 }
+            ],Biology: [
+                { q: "The powerhouse of the cell is the:", options: ["Nucleus", "Ribosome", "Mitochondria", "Chloroplast"], answer: 2 },
+                { q: "Which blood cells fight infection?", options: ["Red blood cells", "White blood cells", "Platelets", "Plasma"], answer: 1 },
+                { q: "Photosynthesis takes place in the:", options: ["Root", "Stem", "Leaf", "Flower"], answer: 2 }
+            ],
+            Government: [
+                { q: "Nigeria became a republic in:", options: ["1960", "1963", "1979", "1999"], answer: 1 },
+                { q: "The head of state in a parliamentary system is the:", options: ["Prime Minister", "President", "Governor", "Speaker"], answer: 1 },
+                { q: "Which organ interprets the constitution?", options: ["Executive", "Legislature", "Judiciary", "Civil Service"], answer: 2 }
+            ],
+            Economics: [
+                { q: "The basic economic problem is:", options: ["Inflation", "Scarcity", "Unemployment", "Poverty"], answer: 1 },
+                { q: "Demand is the willingness and ability to:", options: ["Produce", "Sell", "Buy", "Export"], answer: 2 },
+                { q: "Which is a direct tax?", options: ["VAT", "Import duty", "Income tax", "Excise duty"], answer: 2 }
+            ],
+            Literature: [
+                { q: "Who wrote 'Things Fall Apart'?", options: ["Wole Soyinka", "Chinua Achebe", "Ngugi wa Thiong'o", "Ayi Kwei Armah"], answer: 1 },
+                { q: "A poem with 14 lines is called a:", options: ["Limerick", "Sonnet", "Haiku", "Epic"], answer: 1 },
+                { q: "The main character in a story is the:", options: ["Antagonist", "Protagonist", "Narrator", "Foil"], answer: 1 }
+            ]
+        };
+
+        let currentSubject = "";
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let timeLeft = 60;
+        let timerInterval;
+
+        function startSubject(subject) {
+            currentSubject = subject;
+            currentQuestions = questions[subject];
+            currentIndex = 0;
+            score = 0;
+            timeLeft = 60;
+            document.getElementById("score").textContent = "Score: 0";
+            showScreen("quiz");
+            showQuestion();
+            startTimer();
+        }
+
+        function showQuestion() {
+            if (currentIndex >= currentQuestions.length) {
+                endQuiz();

@@ -5,22 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UTME Practice App</title>
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
             background: #f0f4f8;
-            text-align: center;
+            color: #333;
+            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto;
         }
         h1 {
+            text-align: center;
             color: #1a5276;
+            margin: 15px 0 5px;
+            font-size: 1.6rem;
         }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .screen { display: none; }
+        .screen.active { display: block; }
         .btn {
             display: block;
-            width: 80%;
-            max-width: 300px;
-            margin: 12px auto;
-            padding: 15px;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
             background: #2874a6;
             color: white;
             border: none;
@@ -28,22 +40,42 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .btn:hover {
-            background: #1a5276;
+        .btn:hover, .btn:active { background: #1a5276; }
+        .btn.secondary { background: #5d6d7e; }
+        .btn.correct { background: #27ae60; }
+        .btn.wrong { background: #e74c3c; }
+        .question-box {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .timer, .score {
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .options button {
+            text-align: left;
+            background: #ecf0f1;
+            color: #333;
+            margin: 8px 0;
+        }
+        .result {
+            text-align: center;
+            font-size: 1.3rem;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <h1>UTME Practice App</h1>
-    <p>Free practice for Nigerian students</p>
-
-    <button class="btn" onclick="alert('English coming soon')">English</button>
-    <button class="btn" onclick="alert('Mathematics coming soon')">Mathematics</button>
-    <button class="btn" onclick="alert('Physics coming soon')">Physics</button>
-    <button class="btn" onclick="alert('Chemistry coming soon')">Chemistry</button>
-    <button class="btn" onclick="alert('Biology coming soon')">Biology</button>
-    <button class="btn" onclick="alert('Government coming soon')">Government</button>
-    <button class="btn" onclick="alert('Economics coming soon')">Economics</button>
-    <button class="btn" onclick="alert('Literature coming soon')">Literature</button>
-</body>
-</html>
+    <!-- Home Screen -->
+    <div id="home" class="screen active">
+        <h1>UTME Practice App</h1>
+        <p class="subtitle">Free practice for Nigerian students</p>
+        <button class="btn" onclick="startSubject('English')">English</button>
+        <button class="btn" onclick="startSubject('Mathematics')">Mathematics</button>
+        <button class="btn" onclick="startSubject('Physics')">Physics</button>
+        <button class="btn" onclick="start
